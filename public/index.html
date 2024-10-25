@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplayer Game</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- <style>
+        body { display: flex; justify-content: center; align-items: center; height: 100vh; background: yellow; }
+        #game { width: 800px; height: 600px; background: green; position: relative; border: 1px solid #000; }
+        .player { width: 20px; height: 20px; background: red; position: absolute; }
+    </style> -->
+</head>
+<body>
+    <div id="game"></div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const gameArea = document.getElementById('game');
+        const players = {};
+
+        socket.on('playerConnected', (data) => {
+            const playerDiv = document.createElement('div');
+            playerDiv.classList.add('player');
+            playerDiv.style.left = data.position.x + 'px';
+            playerDiv.style.top = data.position.y + 'px';
+            playerDiv.id = data.id;
+            gameArea.appendChild(playerDiv);
+            players[data.id] = playerDiv;
+        });
+
+        socket.on('playerMoved', (data) => {
+            const playerDiv = players[data.id];
+            if (playerDiv) {
+                playerDiv.style.left = data.position.x + 'px';
+                playerDiv.style.top = data.position.y + 'px';
+            }
+        });
+
+        socket.on('playerDisconnected', (id) => {
+            const playerDiv = players[id];
+            if (playerDiv) {
+                gameArea.removeChild(playerDiv);
+                delete players[id];
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            const dx = (event.key === 'ArrowRight' ? 5 : event.key === 'ArrowLeft' ? -5 : 0);
+            const dy = (event.key === 'ArrowDown' ? 5 : event.key === 'ArrowUp' ? -5 : 0);
+            socket.emit('move', { dx, dy });
+        });
+    </script>
+</body>
+</html>

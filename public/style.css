@@ -1,0 +1,90 @@
+/* Reset styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styling */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+}
+
+/* Game area styling */
+#game {
+    width: 800px;
+    height: 600px;
+    background-color: #ffffff;
+    border: 2px solid #333;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Player avatars styling */
+.player {
+    width: 20px;
+    height: 20px;
+    background-color: #3498db; /* Default player color */
+    border-radius: 50%; /* Circular shape for players */
+    position: absolute;
+    transition: transform 0.1s ease; /* Smooth movement */
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Local player color */
+.player.self {
+    background-color: #2ecc71; /* Green color for the current user */
+}
+
+/* Other players color */
+.player.enemy {
+    background-color: #e74c3c; /* Red color for other players */
+}
+
+/* Game area message styling (optional) */
+#game h1 {
+    position: absolute;
+    width: 100%;
+    top: 20px;
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+}
+
+#game p {
+    position: absolute;
+    width: 100%;
+    bottom: 20px;
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+}
+
+/* Animation for players spawning in the game area */
+@keyframes spawn {
+    0% { transform: scale(0); }
+    100% { transform: scale(1); }
+}
+
+.player {
+    animation: spawn 0.3s ease-out;
+}
+
+/* Responsive design */
+@media (max-width: 800px) {
+    #game {
+        width: 90%;
+        height: 60%;
+    }
+    .player {
+        width: 15px;
+        height: 15px;
+    }
+}
